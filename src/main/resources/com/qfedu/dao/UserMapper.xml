@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.dao.UserMapper">
+
+    <resultMap id="userMap" type="user">
+        <!--
+           resultMap中不是所有字段都要进行映射，数据库中和实体中字段名称相同的，可以不写
+           如果id名称和实体名称一样，也一样可以省略不映射
+           column 到底和谁照应？数据库 or 别名？
+              别名，所谓别名就是说跟你结果集上的名字保持一致
+        -->
+        <id property="id" column="id"/><!--主键-->
+        <result property="password" column="password"/>
+        <result property="username" column="username"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="phone" column="phone"/>
+
+        <!--<result property="speakerName" column="speaker2"/>-->
+    </resultMap>
+    <!--sql片段，可以将一些公共的sql，编写成sql片段，便于简化我们的xml配置文件-->
+    <select id="selectUserList"  resultMap="userMap">
+        select * from user5
+    </select>
+    <delete id="delUserById" parameterType="int" >
+        DELETE FROM user5 WHERE id=#{id}
+    </delete>
+    <insert id="insertUser" parameterType="user">
+        INSERT INTO user5(id,account,password,username,sex,age,phone )
+        VALUES (NULL ,#{account},#{password},#{username},#{sex},#{age},#{phone}
+        )
+    </insert>
+    <select id="findById" resultMap="userMap" parameterType="int">
+        select * from user5 where id=#{id}
+    </select>
+    <update id="updateUser" parameterType="user">
+        UPDATE user5 SET account=#{account},password=#{password},username=#{username}
+        ,sex=#{sex},age=#{age},phone=#{phone}
+
+        where id=#{id}
+    </update>
+</mapper>
